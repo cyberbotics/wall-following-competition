@@ -1,17 +1,11 @@
 <span id="title">
 
-# Competition Organizer Template
+# Wall Following Competition
 
 </span>
 
 [![webots.cloud - Competition](https://img.shields.io/badge/webots.cloud-Competition-007ACC)][1]
 
-<!-- TODO: add examples when available
-## Competition Examples
-
-- <https://github.com/cyberbotics/robot-programming-competition-disabled>
-- <https://github.com/cyberbotics/inverted-pendulum-competition-disabled>
--->
 ## Organizer Setup
 
 To organize your own competition, follow the instructions in the [ORGANIZER.md](ORGANIZER.md) file.
