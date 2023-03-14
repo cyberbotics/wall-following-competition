@@ -26,6 +26,7 @@ TexturedBackground {
 DEF PIONEER WallFollowingPioneer3dx {
   translation 0 0 0.0943896
   controller "participant"
+  name "participant"
 }
 RectangleArena {
   translation 3 -16 0
