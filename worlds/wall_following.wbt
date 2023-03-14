@@ -10,7 +10,7 @@ WorldInfo {
   info [
     "The Pioneer Robot has to follow the wall."
   ]
-  title "Wall Following"
+  title "Wall Following Competition"
   window "wall_following"
   basicTimeStep 16
 }
@@ -25,7 +25,7 @@ TexturedBackground {
 }
 DEF PIONEER WallFollowingPioneer3dx {
   translation 0 0 0.0943896
-  controller "wall_following"
+  controller "participant"
 }
 RectangleArena {
   translation 3 -16 0
