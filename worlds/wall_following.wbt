@@ -16,7 +16,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation 0.1828276612284821 0.18933238362590787 -0.9647420871923518 1.296798626946832
-  position -0.5835497533546872 3.3130824185195724 1.7356994764173195
+  position 1.7403360035939852 3.9783908740269593 2.006993153908452
   follow "Pioneer 3-DX"
 }
 TexturedBackgroundLight {
@@ -25,8 +25,8 @@ TexturedBackground {
 }
 DEF PIONEER WallFollowingPioneer3dx {
   translation 2.4874 0 0.0959
-  controller "participant"
   name "participant"
+  controller "participant"
 }
 RectangleArena {
   translation 3 -16 0
