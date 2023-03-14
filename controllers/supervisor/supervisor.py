@@ -1,37 +1,67 @@
-"""Supervisor of the Robot Programming Competition."""
+"""Supervisor of the Robot Programming benchmark."""
 
 from controller import Supervisor
 import os
+import sys
 
-supervisor = Supervisor()
+# Constant used for the automated benchmark evaluation script
+# - can also be used to generate an animation in storage folder if set to True
+RECORD_ANIMATION = False
 
-timestep = int(supervisor.getBasicTimeStep())
+if RECORD_ANIMATION:
+    import recorder.recorder as rec
 
-thymio = supervisor.getFromDef("COMPETITION_ROBOT")
+def benchmarkPerformance(message, robot):
+    benchmark_name = message.split(':')[1]
+    benchmark_performance_string = message.split(':')[3]
+    print(benchmark_name + ' Benchmark complete! Your performance was ' + benchmark_performance_string)
+
+robot = Supervisor()
+
+timestep = int(robot.getBasicTimeStep())
+
+thymio = robot.getFromDef("BENCHMARK_ROBOT")
 translation = thymio.getField("translation")
 
+if RECORD_ANIMATION:
+    # Recorder code: wait for the controller to connect and start the animation
+    rec.animation_start_and_connection_wait(robot)
+    step_max = 1000 * rec.MAX_DURATION / timestep
+    step_counter = 0
+
 tx = 0
-ongoing_competition = True
-while supervisor.step(timestep) != -1 and ongoing_competition:
+running = True
+while robot.step(timestep) != -1 and running:
     t = translation.getSFVec3f()
-    if ongoing_competition:
+    if running:
         percent = 1 - abs(0.25 + t[0]) / 0.25
         if percent < 0:
             percent = 0
         if t[0] < -0.01 and abs(t[0] - tx) < 0.0001:  # away from starting position and not moving any more
-            ongoing_competition = False
+            running = False
             name = 'Robot Programming'
-            message = f'success:{name}:{percent}:{percent*100:.2f}%'
+            performance = str(percent)
+            performanceString = str(round(percent * 100, 2)) + '%'
+            message = 'success:' + name + ':' + performance + ':' + performanceString
+            robot.wwiSendText(message)
+            break
         else:
-            message = f"percent:{percent}"
-        supervisor.wwiSendText(message)
+            message = "percent"
+        message += ":" + str(percent)
+        robot.wwiSendText(message)
         tx = t[0]
+    if RECORD_ANIMATION:
+        # Stops the simulation if the controller takes too much time
+        step_counter += 1
+        if step_counter >= step_max:
+            break
 
-print(f"Competition complete! Your performance was {message.split(':')[3]}")
+if RECORD_ANIMATION:
+    # Write performance to file, stop recording and close Webots
+    rec.record_performance(running, percent)
+    rec.animation_stop(robot, timestep)
+    robot.simulationQuit(0)
+else:
+    benchmarkPerformance(message, robot)
 
-# Performance output used by automated CI script
-CI = os.environ.get("CI")
-if CI:
-    print(f"performance:{percent}")
-
-supervisor.simulationSetMode(Supervisor.SIMULATION_MODE_PAUSE)
+robot.simulationSetMode(Supervisor.SIMULATION_MODE_PAUSE)
