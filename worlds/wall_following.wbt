@@ -24,7 +24,7 @@ TexturedBackgroundLight {
 TexturedBackground {
 }
 DEF PIONEER WallFollowingPioneer3dx {
-  translation 0 0 0.0943896
+  translation 2.4874 0 0.0959
   controller "participant"
   name "participant"
 }
