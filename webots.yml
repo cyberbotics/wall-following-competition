@@ -1,8 +1,8 @@
 publish: true
 type: competition
 world:
-  file: worlds/robot_programming.wbt
-  max-duration: 30
+  file: worlds/wall_following.wbt
+  max-duration: 70
   metric: percent
   higher-is-better: true
 dockerCompose: competition:webots-project/controllers/participant/
